@@ -7,7 +7,7 @@ class Game
 
   def create_board
     @board = [
-      ' 0', '|', ' 2', '|', ' 4',
+      '_0', '|', '_2', '|', '_4',
       '--', '|', '--', '|', '--',
       '10', '|', '12', '|', '14',
       '--', '|', '--', '|', '--',
@@ -33,22 +33,22 @@ class Game
     if vertical_win?(token) || horizontal_win?(token) || diagonal_win?(token)
       puts "#{name} wins the game!"
       true
-    # elsif draw?
-    #   puts "It's a draw! No one wins :("
-    #   true
+    elsif draw?
+      puts "It's a draw! No one wins :("
+      true
     end
   end
 
   protected
 
   def draw?
-    @board.none?('_') && (!diagonal_win? || !horizontal_win? || !vertical_win?)
+    @board.none?(/\d/) && (!diagonal_win? || !horizontal_win? || !vertical_win?)
   end
 
   def diagonal_win?(token = '')
     all_d = [
-      [@board[2], @board[11], @board[20]],
-      [@board[6], @board[11], @board[16]]
+      [@board[0], @board[12], @board[24]],
+      [@board[4], @board[12], @board[20]]
     ]
     p "Track Diagonal: #{all_d}"
     true if all_d[0].all?(token) || all_d[1].all?(token)
@@ -56,9 +56,9 @@ class Game
 
   def vertical_win?(token = '')
     all_v = [
-      [@board[2], @board[9], @board[16]],
-      [@board[4], @board[11], @board[18]],
-      [@board[6], @board[13], @board[20]]
+      [@board[0], @board[10], @board[20]],
+      [@board[2], @board[12], @board[22]],
+      [@board[4], @board[14], @board[24]]
     ]
     p "Track Vertical: #{all_v}"
     true if all_v[0].all?(token) || all_v[1].all?(token) || all_v[2].all?(token)
@@ -66,9 +66,9 @@ class Game
 
   def horizontal_win?(token = '')
     all_h = [
-      [@board[2], @board[4], @board[6]],
-      [@board[9], @board[11], @board[13]],
-      [@board[16], @board[18], @board[20]]
+      [@board[0], @board[2], @board[4]],
+      [@board[10], @board[12], @board[14]],
+      [@board[20], @board[22], @board[24]]
     ]
     p "Track Horizontal: #{all_h}"
     true if all_h[0].all?(token) || all_h[1].all?(token) || all_h[2].all?(token)

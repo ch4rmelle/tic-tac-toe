@@ -7,35 +7,17 @@ class Game
 
   def create_board
     @board = [
-      'a', ' ', '_', '|', '_', '|',  '_',
-      'b', ' ', '_', '|', '_', '|',  '_',
-      'c', ' ', '_', '|', '_', '|',  '_',
-      ' ', ' ', '1', ' ', '2', ' ',  '3'
-    ].each_slice(7) { |x| puts x.join }
+      ' 0', '|', ' 2', '|', ' 4',
+      '--', '|', '--', '|', '--',
+      '10', '|', '12', '|', '14',
+      '--', '|', '--', '|', '--',
+      '20', '|', '22', '|', '24'
+    ].each_slice(5) { |x| puts x.join }
   end
 
-  def update_board(position = "", token = "")
-    case position
-    when '1a'
-      @board[2] = token
-    when '1b'
-      @board[4] = token
-    when '1c'
-      @board[6] = token
-    when '2a'
-      @board[9] = token
-    when '2b'
-      @board[11] = token
-    when '2c'
-      @board[13] = token
-    when '3a'
-      @board[16] = token
-    when '3b'
-      @board[18] = token
-    when '3c'
-      @board[20] = token
-    end
-    @board = @board.each_slice(7) { |x| puts x.join }
+  def update_board(position = '', token = '')
+    @board[position] = token
+    @board = @board.each_slice(5) { |x| puts x.join }
   end
 
   def occupied?(position)
@@ -43,7 +25,7 @@ class Game
   end
 
   def randomize_token
-    tokens = %w[x o]
+    tokens = %w[XX OO]
     tokens[(rand * tokens.length).floor]
   end
 
@@ -51,9 +33,9 @@ class Game
     if vertical_win?(token) || horizontal_win?(token) || diagonal_win?(token)
       puts "#{name} wins the game!"
       true
-    elsif draw?
-      puts "It's a draw! No one wins :("
-      true
+    # elsif draw?
+    #   puts "It's a draw! No one wins :("
+    #   true
     end
   end
 
@@ -118,7 +100,7 @@ player2 = Player.new(name2)
 # get player 1 token
 player1.token = game.randomize_token
 # get player 2 token
-player2.token = player1.token == 'x' ? 'o' : 'x'
+player2.token = player1.token == 'XX' ? 'OO' : 'XX'
 # get token
 puts "#{player1.name} is #{player1.token} and #{player2.name} is #{player2.token}.
         #{player1.name} plays first!"
@@ -126,17 +108,17 @@ game.create_board
 
 curr_player = player1
 positions = %w[
-  1a 1b 1c
-  2a 2b 2c
-  3a 3b 3c
+  0 2 4
+  10 12 14
+  20 22 24
 ]
 x = 0
 no_break = true
 while no_break
-  puts "\n#{curr_player.name}, enter a coordinate. Ex: 1a."
+  puts "\n#{curr_player.name}, enter a number from the board to place token."
   curr_player.position = gets.chomp
   if positions.include?(curr_player.position)
-    game.update_board(curr_player.position, curr_player.token)
+    game.update_board(curr_player.position.to_i, curr_player.token)
     break if game.winner(curr_player.token, curr_player.name)
 
     curr_player = curr_player == player1 ? player2 : player1

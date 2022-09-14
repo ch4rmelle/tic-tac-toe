@@ -1,5 +1,3 @@
-require 'colorize'
-
 class Game
   def initialize
     @board = Board.new
@@ -123,6 +121,11 @@ class Player
   def initialize(name)
     @name = name
   end
+end
+
+class String
+  def blue; "\033[34m#{self}\033[0m" end
+  def red;  "\033[31m#{self}\033[0m" end
 end
 
 game = Game.new

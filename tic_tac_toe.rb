@@ -14,6 +14,7 @@ class Game
       if !@board.occupied?(position) && @board.place.include?(position.to_s)
         @board.update(position, @curr_player.marker)
         break if winner?(@curr_player.marker, @curr_player.name)
+
         switch_players
       else
         puts 'Error! Invalid input.'
@@ -56,7 +57,7 @@ class Game
     @board.place.all?(/[^0-9]/)
   end
 
-  def diagonal_win?(marker = '')
+  def diagonal_win?(marker)
     all_d = [
       [@board.place[0], @board.place[4], @board.place[8]],
       [@board.place[2], @board.place[4], @board.place[6]]
@@ -64,7 +65,7 @@ class Game
     true if all_d[0].all?(marker) || all_d[1].all?(marker)
   end
 
-  def horizontal_win?(marker = '')
+  def horizontal_win?(marker)
     all_h = [
       [@board.place[0], @board.place[1], @board.place[2]],
       [@board.place[3], @board.place[4], @board.place[5]],
@@ -73,7 +74,7 @@ class Game
     true if all_h[0].all?(marker) || all_h[1].all?(marker) || all_h[2].all?(marker)
   end
 
-  def vertical_win?(marker = '')
+  def vertical_win?(marker)
     all_v = [
       [@board.place[0], @board.place[3], @board.place[6]],
       [@board.place[1], @board.place[4], @board.place[7]],
@@ -98,6 +99,7 @@ class Board
               '-', '+', '-', '+', '-',
               @place[6], '|', @place[7], '|', @place[8]]
     @board.each_slice(5) { |x| puts x.join }
+
   end
 
   def update(position, marker)
